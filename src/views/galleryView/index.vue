@@ -77,7 +77,9 @@
         <h3>批量上传图片</h3>
         <div class="tip-container">
           <ul class="tips-list">
-            <li>审核规则：1.不要 AI 图 2.不要色情倾向 3.要我能认出是楪祈。</li>
+            <li>
+              审核规则：1.不要 AI 图 2.不要色情倾向 3.要我能认出是珂朵莉。
+            </li>
             <li>
               由于没有用户系统，我这边不好做审核反馈，但只要显示上传成功，我这边肯定能收到。
             </li>
@@ -202,7 +204,7 @@ const page = 1;
 const pageSize = 99;
 
 const fetchRanking = async () => {
-  const res = await getRankingList({ page, pageSize, character_key: "yeqi" });
+  const res = await getRankingList({ page, pageSize, character_key: "kdl" });
   if (res.success) {
     rankingList.value = res.data;
   } else {
@@ -249,7 +251,7 @@ async function loadNextPage() {
       page: pageImage.value,
       limit: limit.value,
       sortBy: sortBy.value,
-      character_key: "yeqi",
+      character_key: "kdl",
       order: order.value,
     });
     const likedIds = getLikedIds();
@@ -410,7 +412,7 @@ async function submitUpload() {
     const res = await uploadImages(
       selectedFiles.value,
       nickname.value.trim(),
-      "yeqi"
+      "kdl"
     );
     const uploadedCount = res.data.length;
     // 更新 localStorage
@@ -613,31 +615,55 @@ $highlight: #ffd700;
       margin: 16px 0;
 
       .sort-btn {
-        padding: 8px 20px;
-        background: linear-gradient(135deg, #ff8ec4, #da70d6);
-        color: #fff;
+        padding: 8px 24px;
+        background: linear-gradient(135deg, #a2cffe 0%, #486ea4 80%);
+        color: #f0f8ff;
         border: none;
-        border-radius: 24px;
+        border-radius: 28px;
         cursor: pointer;
         font-size: 1rem;
         font-family: "Helvetica Neue", sans-serif;
-        box-shadow: 0 6px 20px rgba(218, 112, 214, 0.5),
-          0 0 8px rgba(255, 142, 196, 0.7);
-        transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
+        box-shadow: 0 6px 18px rgba(72, 110, 164, 0.6),
+          0 0 8px rgba(162, 207, 254, 0.5);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.3s, background 0.4s;
+      }
 
-        &:hover {
-          transform: scale(1.05);
-          background: linear-gradient(135deg, #fff0fb, #ffc0e8);
-          color: #3d004d;
-          box-shadow: 0 8px 30px rgba(218, 112, 214, 0.7),
-            0 0 12px rgba(255, 142, 196, 0.9);
-        }
+      .sort-btn::after {
+        content: "";
+        position: absolute;
+        left: -50%;
+        top: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle at center,
+          rgba(255, 100, 120, 0.4),
+          transparent 60%
+        );
+        opacity: 0;
+        transform: scale(0.5);
+        transition: opacity 0.4s, transform 0.4s;
+      }
 
-        &:active {
-          transform: scale(0.98);
-          box-shadow: 0 4px 12px rgba(218, 112, 214, 0.4),
-            0 0 6px rgba(255, 142, 196, 0.6);
-        }
+      .sort-btn:hover {
+        transform: scale(1.05);
+        background: linear-gradient(135deg, #d0708c 20%, #8c325a 100%);
+        color: #ffe4eb;
+        box-shadow: 0 8px 28px rgba(208, 112, 140, 0.8),
+          0 0 12px rgba(255, 100, 120, 0.7);
+      }
+
+      .sort-btn:hover::after {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .sort-btn:active {
+        transform: scale(0.98);
+        box-shadow: 0 4px 12px rgba(72, 110, 164, 0.4),
+          0 0 6px rgba(162, 207, 254, 0.3);
       }
     }
 
@@ -843,80 +869,104 @@ $highlight: #ffd700;
     }
   }
 
-  /* 上传按钮 —— Inori 风格 */
+  /* 上传按钮  */
   .upload-btn {
     position: fixed;
     bottom: 24px;
     right: 24px;
     padding: 14px 24px;
-    background: linear-gradient(135deg, #ff8ec4, #da70d6);
-    color: #fff;
+    background: linear-gradient(135deg, #a4d9f9, #2f3f6b);
+    color: #f0f8ff;
     font-size: 1rem;
     font-family: "Helvetica Neue", sans-serif;
     border: none;
     border-radius: 30px;
-    box-shadow: 0 8px 30px rgba(218, 112, 214, 0.5),
-      0 0 8px rgba(255, 142, 196, 0.7);
+    box-shadow: 0 8px 30px rgba(46, 75, 153, 0.6),
+      0 0 8px rgba(164, 217, 249, 0.4);
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.3s;
+    transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
     z-index: 10;
 
     &:hover {
       transform: scale(1.1);
-      box-shadow: 0 12px 40px rgba(218, 112, 214, 0.7),
-        0 0 12px rgba(255, 142, 196, 0.9);
-      background: linear-gradient(135deg, #fff0fb, #ffc0e8);
-      color: #3d004d;
+      background: linear-gradient(135deg, #d16ba5, #a03070);
+      color: #ffe4eb;
+      box-shadow: 0 12px 40px rgba(209, 107, 165, 0.7),
+        0 0 12px rgba(255, 100, 120, 0.9);
+    }
+
+    &:active {
+      transform: scale(0.95);
+      box-shadow: 0 4px 16px rgba(46, 75, 153, 0.4),
+        0 0 6px rgba(164, 217, 249, 0.3);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        circle at center,
+        rgba(255, 100, 120, 0.3),
+        transparent 60%
+      );
+      opacity: 0;
+      transition: opacity 0.4s, transform 0.4s;
+      transform: scale(0.5);
+    }
+
+    &:hover::after {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 
-  /* 上传弹窗遮罩 */
   .upload-modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(10, 0, 20, 0.85);
-    backdrop-filter: blur(4px);
+    background: rgba(15, 5, 40, 0.9);
+    backdrop-filter: blur(6px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2000;
   }
 
-  /* 弹窗主体 */
   .upload-modal {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(20, 20, 60, 0.85);
     padding: 36px;
-    border-radius: 16px;
+    border-radius: 18px;
     width: 660px;
-    color: #f8eef8;
-    box-shadow: 0 12px 40px rgba(218, 112, 214, 0.6);
-    border: 1px solid rgba(218, 112, 214, 0.4);
+    color: #e9eef8;
+    box-shadow: 0 12px 40px rgba(46, 75, 153, 0.6);
+    border: 1px solid rgba(164, 217, 249, 0.4);
     position: relative;
     font-family: "Helvetica Neue", sans-serif;
 
     h3 {
       margin-bottom: 16px;
       font-size: 1.6rem;
-      color: #ff8ec4;
+      color: #a4d9f9;
       text-align: center;
-      text-shadow: 0 0 8px rgba(255, 142, 196, 0.7);
+      text-shadow: 0 0 8px rgba(164, 217, 249, 0.8);
     }
 
     .stats {
-      margin-bottom: 20px;
+      margin: 20px 0;
       font-size: 1rem;
       text-align: center;
 
       strong {
-        color: #da70d6;
+        color: #d16ba5;
       }
     }
 
     .tip-container {
       margin-top: 20px;
       padding: 16px 20px;
-      background: rgba(218, 112, 214, 0.1);
-      border-left: 4px solid #ff8ec4;
+      background: rgba(164, 217, 249, 0.1);
+      border-left: 4px solid #a4d9f9;
       border-radius: 8px;
 
       .tips-list {
@@ -929,7 +979,7 @@ $highlight: #ffd700;
           padding-left: 28px;
           margin-bottom: 10px;
           font-size: 0.95rem;
-          color: #ffe0fb;
+          color: #eff4ff;
 
           &::before {
             content: "✧";
@@ -937,10 +987,9 @@ $highlight: #ffd700;
             left: 0;
             top: 0;
             font-size: 1.2rem;
-            color: #ff8ec4;
-            text-shadow: 0 0 4px rgba(255, 142, 196, 0.6);
+            color: #a4d9f9;
+            text-shadow: 0 0 4px rgba(164, 217, 249, 0.6);
           }
-
           &:last-child {
             margin-bottom: 0;
           }
@@ -950,9 +999,9 @@ $highlight: #ffd700;
 
     .tip {
       margin-top: 10px;
-      font-size: 0.9rem;
-      color: #ffe0fb;
       text-align: right;
+      font-size: 0.9rem;
+      color: #eff4ff;
     }
 
     label {
@@ -966,16 +1015,16 @@ $highlight: #ffd700;
         margin-top: 8px;
         padding: 10px 12px;
         border-radius: 8px;
-        border: 1px solid #444;
+        border: 1px solid #555;
         background: rgba(255, 255, 255, 0.05);
-        color: #f8eef8;
+        color: #e9eef8;
         font-size: 0.95rem;
         outline: none;
         transition: border-color 0.2s, box-shadow 0.2s;
 
         &:focus {
-          border-color: #da70d6;
-          box-shadow: 0 0 6px rgba(218, 112, 214, 0.5);
+          border-color: #d16ba5;
+          box-shadow: 0 0 6px rgba(209, 107, 165, 0.5);
         }
       }
     }
@@ -996,18 +1045,18 @@ $highlight: #ffd700;
         transition: background 0.3s, box-shadow 0.3s;
 
         &:not(.cancel) {
-          background: linear-gradient(135deg, #ff8ec4, #da70d6);
-          color: #fff;
-          box-shadow: 0 6px 20px rgba(218, 112, 214, 0.5);
+          background: linear-gradient(135deg, #a4d9f9, #2f3f6b);
+          color: #f0f8ff;
+          box-shadow: 0 6px 20px rgba(46, 75, 153, 0.6);
 
           &:hover:not(:disabled) {
-            background: linear-gradient(135deg, #fff0fb, #ffc0e8);
-            box-shadow: 0 8px 30px rgba(218, 112, 214, 0.7);
-            color: #3d004d;
+            background: linear-gradient(135deg, #d16ba5, #a03070);
+            color: #ffe4eb;
+            box-shadow: 0 8px 30px rgba(209, 107, 165, 0.8);
           }
 
           &:disabled {
-            background: #555;
+            background: #444;
             cursor: not-allowed;
             box-shadow: none;
           }
@@ -1015,11 +1064,11 @@ $highlight: #ffd700;
 
         &.cancel {
           background: transparent;
-          border: 2px solid #ffe0fb;
-          color: #ffe0fb;
+          border: 2px solid #eff4ff;
+          color: #eff4ff;
 
           &:hover {
-            background: rgba(255, 142, 196, 0.2);
+            background: rgba(209, 107, 165, 0.2);
           }
         }
       }
@@ -1028,17 +1077,16 @@ $highlight: #ffd700;
 
   .ranking-panel {
     width: 220px;
-    padding: 24px 16px;
-    margin-left: 24px;
-    background: rgba(20, 0, 30, 0.8);
+    padding: 16px;
+    background: rgba(15, 20, 50, 0.8);
     backdrop-filter: blur(6px);
     border-radius: 18px;
-    box-shadow: 0 8px 30px rgba(218, 112, 214, 0.6),
-      0 0 12px rgba(255, 142, 196, 0.4);
+    box-shadow: 0 8px 30px rgba(46, 75, 153, 0.6),
+      0 0 12px rgba(164, 217, 249, 0.4);
     position: fixed;
-    top: 60px;
-    right: 24px;
-    color: #f0e8f8;
+    top: 84px;
+    right: 12px;
+    color: #e9eef8;
     font-family: "Helvetica Neue", sans-serif;
 
     &.collapsed {
@@ -1054,17 +1102,17 @@ $highlight: #ffd700;
 
       .ranking-title {
         font-size: 1.4rem;
-        color: #ff8ec4;
+        color: #a4d9f9;
         font-family: "Cinzel Decorative", serif;
-        text-shadow: 0 0 6px rgba(255, 142, 196, 0.8);
+        text-shadow: 0 0 6px rgba(164, 217, 249, 0.8);
         margin: 0;
       }
 
       .toggle-icon {
         font-size: 1.2rem;
-        color: #da70d6;
+        color: #a4d9f9;
         user-select: none;
-        text-shadow: 0 0 4px rgba(218, 112, 214, 0.6);
+        text-shadow: 0 0 6px rgba(164, 217, 249, 0.8);
       }
     }
 
@@ -1082,11 +1130,11 @@ $highlight: #ffd700;
         padding: 10px 12px;
         margin-bottom: 6px;
         border-radius: 14px;
-        transition: background 0.3s, box-shadow 0.3s;
+        transition: background 0.3s, box-shadow 0.3s, color 0.3s;
 
         &:hover {
-          background: rgba(255, 142, 196, 0.1);
-          box-shadow: 0 0 8px rgba(255, 142, 196, 0.4);
+          background: rgba(209, 107, 165, 0.1);
+          box-shadow: 0 0 8px rgba(209, 107, 165, 0.4);
         }
 
         .rank {
@@ -1094,47 +1142,43 @@ $highlight: #ffd700;
           text-align: center;
           font-weight: bold;
           font-size: 1rem;
-          color: #fff;
+          color: #f0f8ff;
         }
 
         .name {
           flex: 1;
           padding: 0 8px;
           font-size: 0.9rem;
-          color: #f8eef8;
-          text-shadow: 0 0 4px rgba(218, 112, 214, 0.4);
+          color: #e9eef8;
+          text-shadow: 0 0 4px rgba(164, 217, 249, 0.4);
         }
 
         .count {
           font-size: 0.85rem;
-          color: #ffb3e6;
+          color: #fbc0e8;
           font-weight: bold;
         }
 
-        // 前三名渐变 & 光晕
         &.rank-1 {
-          background: linear-gradient(135deg, #ff8ec4, #da70d6, #ff8ec4);
-          box-shadow: 0 0 12px rgba(255, 142, 196, 0.8);
+          background: linear-gradient(135deg, #a4d9f9, #2f3f6b, #a4d9f9);
+          box-shadow: 0 0 12px rgba(164, 217, 249, 0.8);
         }
-
         &.rank-2 {
-          background: linear-gradient(135deg, #da70d6, #a040c0);
-          box-shadow: 0 0 10px rgba(218, 112, 214, 0.7);
+          background: linear-gradient(135deg, #d16ba5, #a03070);
+          box-shadow: 0 0 10px rgba(209, 107, 165, 0.7);
         }
-
         &.rank-3 {
-          background: linear-gradient(135deg, #c080e0, #da70d6);
-          box-shadow: 0 0 8px rgba(218, 112, 214, 0.6);
+          background: linear-gradient(135deg, #b78ac8, #d16ba5);
+          box-shadow: 0 0 8px rgba(209, 107, 165, 0.6);
         }
       }
     }
 
-    /* 淡入淡出动画 */
+    // 淡入淡出动画
     .fade-enter-active,
     .fade-leave-active {
       transition: opacity 0.3s ease;
     }
-
     .fade-enter-from,
     .fade-leave-to {
       opacity: 0;

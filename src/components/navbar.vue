@@ -4,7 +4,9 @@
       <div class="navbar__logo">
         <span class="logo-icon">🗡️</span>珂朵莉电子设定集
       </div>
-
+      <div class="online-count" v-if="onlineCount !== null">
+        当前在线：<span class="count">{{ onlineCount }}人</span>
+      </div>
       <button
         class="navbar__toggle"
         :class="{ active: open }"
@@ -26,7 +28,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, onBeforeUnmount } from "vue";
+import { io } from "socket.io-client";
+
+const siteId = "kdl";
+
+const onlineCount = ref<number | null>(null);
+
+// 连接时带上 query.siteId
+const socket = io("http://1.94.189.79:3000", {
+  query: { siteId },
+});
 
 const open = ref(false);
 const isScrolled = ref(false);
@@ -54,8 +66,13 @@ const onLinkClick = () => {
 
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
+  socket.on("onlineCount", (count: number) => {
+    onlineCount.value = count;
+  });
 });
-
+onBeforeUnmount(() => {
+  socket.disconnect();
+});
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
@@ -77,6 +94,22 @@ $gradient-end: #d06487;
   transition: background 0.3s, box-shadow 0.3s;
   height: 64px;
   line-height: 32px;
+
+  .online-count {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fde8e8;
+    font-family: "Cinzel Decorative", serif;
+    font-size: 1.05rem;
+
+    .count {
+      color: #d14b4b;
+      font-weight: bold;
+      text-shadow: 0 0 3px #d14b4b;
+    }
+  }
   &.is-scrolled {
     background: rgba(30, 46, 77, 0.85);
     box-shadow: 0 2px 8px rgba(117, 140, 179, 0.5);
