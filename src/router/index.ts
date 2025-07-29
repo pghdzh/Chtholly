@@ -8,16 +8,25 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      component: () => import("@/views/page1/index.vue"),
+      component: () => import("@/views/homeView/index.vue"),
     },
     {
-      path: "/page2",
-      component: () => import("@/views/page2/index.vue"),
+      path: "/timeLine",
+      component: () => import("@/views/timeLineView/index.vue"),
     },
     {
-      path: "/page3",
-      component: () => import("@/views/page3/index.vue"),
+      path: "/characters",
+      component: () => import("@/views/charactersView/index.vue"),
     },
+    {
+      path: "/message",
+      component: () => import("@/views/messageView/index.vue"),
+    },
+      {
+      path: "/gallery",
+      component: () => import("@/views/galleryView/index.vue"),
+    },
+    
   ],
   scrollBehavior() {
     return { top: 0 };

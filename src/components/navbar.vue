@@ -34,8 +34,10 @@ const navbarRef = ref<HTMLElement | null>(null);
 
 const links = [
   { name: "首页", path: "/" },
-  { name: "故事", path: "/story" },
-  { name: "角色", path: "/characters" },
+  { name: "故事概览", path: "/timeLine" },
+  { name: "角色设定", path: "/characters" },
+  { name: "留言板", path: "/message" },
+  { name: "图集", path: "/gallery" },
 ];
 
 const handleScroll = () => {
@@ -73,7 +75,8 @@ $gradient-end: #d06487;
   background: $base-night;
   backdrop-filter: blur(6px);
   transition: background 0.3s, box-shadow 0.3s;
-
+  height: 64px;
+  line-height: 32px;
   &.is-scrolled {
     background: rgba(30, 46, 77, 0.85);
     box-shadow: 0 2px 8px rgba(117, 140, 179, 0.5);

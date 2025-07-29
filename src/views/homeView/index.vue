@@ -7,13 +7,13 @@
           <span>{{ displayText }}</span>
           <span class="cursor">|</span>
         </div>
-        <router-link to="/story" class="btn">了解她的故事</router-link>
+        <router-link to="/timeLine" class="btn">了解她的故事</router-link>
       </div>
     </section>
 
     <footer class="footer">
       <div class="footer__content">
-        <span>© 2025 珂朵莉</span>
+        <span>© 2025 珂朵莉设定集 · 光与记忆永存</span>
       </div>
     </footer>
   </div>
