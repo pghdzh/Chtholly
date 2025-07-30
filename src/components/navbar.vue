@@ -50,6 +50,7 @@ const links = [
   { name: "角色设定", path: "/characters" },
   { name: "留言板", path: "/message" },
   { name: "图集", path: "/gallery" },
+   { name: "柯学探讨", path: "/talk" },
 ];
 
 const handleScroll = () => {
