@@ -7,11 +7,7 @@
       <div class="online-count" v-if="onlineCount !== null">
         当前在线：<span class="count">{{ onlineCount }}人</span>
       </div>
-      <button
-        class="navbar__toggle"
-        :class="{ active: open }"
-        @click="toggleMenu"
-      >
+      <button class="navbar__toggle" :class="{ active: open }" @click="toggleMenu">
         <span class="navbar__toggle-line"></span>
         <span class="navbar__toggle-line"></span>
         <span class="navbar__toggle-line"></span>
@@ -50,7 +46,8 @@ const links = [
   { name: "角色设定", path: "/characters" },
   { name: "留言板", path: "/message" },
   { name: "图集", path: "/gallery" },
-   { name: "柯学探讨", path: "/talk" },
+  { name: "柯学探讨", path: "/talk" },
+   { name: "柯学演绎", path: "/story" },
 ];
 
 const handleScroll = () => {
@@ -93,24 +90,9 @@ $gradient-end: #d06487;
   background: $base-night;
   backdrop-filter: blur(6px);
   transition: background 0.3s, box-shadow 0.3s;
-  height: 64px;
-  line-height: 32px;
+  padding: 11px;
 
-  .online-count {
-    position: absolute;
-    right: 60px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fde8e8;
-    font-family: "Cinzel Decorative", serif;
-    font-size: 1.05rem;
 
-    .count {
-      color: #d14b4b;
-      font-weight: bold;
-      text-shadow: 0 0 3px #d14b4b;
-    }
-  }
   &.is-scrolled {
     background: rgba(30, 46, 77, 0.85);
     box-shadow: 0 2px 8px rgba(117, 140, 179, 0.5);
@@ -131,10 +113,24 @@ $gradient-end: #d06487;
     color: rgba(255, 255, 255, 0.9);
     display: flex;
     align-items: center;
+
     .logo-icon {
       margin-right: 0.5em;
       font-size: 1.3rem;
       filter: drop-shadow(0 0 4px rgba(208, 100, 135, 0.7));
+    }
+  }
+
+  .online-count {
+
+    color: #fde8e8;
+    font-family: "Cinzel Decorative", serif;
+    font-size: 1.05rem;
+
+    .count {
+      color: #d14b4b;
+      font-weight: bold;
+      text-shadow: 0 0 3px #d14b4b;
     }
   }
 
@@ -148,19 +144,23 @@ $gradient-end: #d06487;
     border: none;
     cursor: pointer;
     padding: 0;
+
     .navbar__toggle-line {
       width: 100%;
       height: 2px;
       background: linear-gradient(to right, $gradient-start, $gradient-end);
       transition: transform 0.3s;
     }
+
     &.active {
       .navbar__toggle-line:nth-child(1) {
         transform: rotate(45deg) translate(4px, 4px);
       }
+
       .navbar__toggle-line:nth-child(2) {
         opacity: 0;
       }
+
       .navbar__toggle-line:nth-child(3) {
         transform: rotate(-45deg) translate(4px, -4px);
       }
@@ -172,9 +172,11 @@ $gradient-end: #d06487;
     list-style: none;
     margin: 0;
     padding: 0;
+
     li {
       margin-left: 2rem;
     }
+
     a {
       position: relative;
       color: rgba(255, 255, 255, 0.9);
@@ -183,6 +185,7 @@ $gradient-end: #d06487;
       text-decoration: none;
       padding: 0.25rem 0;
       transition: color 0.3s;
+
       &::after {
         content: "";
         position: absolute;
@@ -193,9 +196,11 @@ $gradient-end: #d06487;
         background: linear-gradient(to right, $gradient-start, $gradient-end);
         transition: width 0.3s;
       }
+
       &:hover,
       &.router-link-active {
         color: #fff;
+
         &::after {
           width: 100%;
           box-shadow: 0 0 4px rgba($gradient-end, 0.7);
@@ -213,8 +218,10 @@ $gradient-end: #d06487;
       overflow: hidden;
       max-height: 0;
       transition: max-height 0.3s ease;
+
       &.is-open {
         max-height: 300px;
+
         li {
           margin: 1rem 0;
           text-align: center;
@@ -226,6 +233,10 @@ $gradient-end: #d06487;
   @media (max-width: 768px) {
     &__toggle {
       display: flex;
+    }
+
+    .navbar__logo {
+      display: none;
     }
   }
 }

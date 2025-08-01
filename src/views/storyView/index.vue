@@ -7,7 +7,7 @@
       <!-- 统计面板（放在聊天容器顶部） -->
       <div class="stats-panel">
         <div class="stat-item">
-          总对话次数：<span>{{ stats.totalChats }}</span>
+          总演绎次数：<span>{{ stats.totalChats }}</span>
         </div>
         <div class="stat-item">
           首次使用：<span>{{
@@ -18,7 +18,7 @@
           活跃天数：<span>{{ stats.activeDates.length }}</span> 天
         </div>
         <div class="stat-item">
-          今日对话：<span>{{ stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0 }}</span> 次
+          今日演绎：<span>{{ stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0 }}</span> 次
         </div>
         <button class="detail-btn" @click="showModal = true">全部</button>
       </div>
@@ -48,7 +48,7 @@
         <input v-model="input" type="text" placeholder="向珂朵莉提问…" :disabled="loading" @keydown="handleKeydown" />
         <!-- 清空 & 语音 图标按钮组 -->
         <div class="btn-group">
-          <button type="button" class="clear-btn" @click="clearChat" :disabled="loading" title="清空对话">
+          <button type="button" class="clear-btn" @click="clearChat" :disabled="loading" title="清空演绎">
             ✖
           </button>
         </div>
@@ -68,14 +68,14 @@
       <div class="modal-content">
         <h3>详细统计</h3>
         <ul class="detail-list">
-          <li>总对话次数：{{ stats.totalChats }}</li>
+          <li>总演绎次数：{{ stats.totalChats }}</li>
           <li>
             首次使用：{{
               new Date(stats.firstTimestamp).toISOString().slice(0, 10)
             }}
           </li>
           <li>活跃天数：{{ stats.activeDates.length }} 天</li>
-          <li>今日对话：{{ stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0 }} 次</li>
+          <li>今日演绎：{{ stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0 }} 次</li>
           <li>总使用时长：{{ formatDuration(stats.totalTime) }}</li>
           <li>当前连续活跃：{{ stats.currentStreak }} 天</li>
           <li>最长连续活跃：{{ stats.longestStreak }} 天</li>
@@ -103,21 +103,21 @@ import {
   onBeforeUnmount,
   onUnmounted,
 } from "vue";
-import { sendMessageToKdl } from "@/api/deepseekApi";
+import { sendMessageToSystem } from "@/api/deepseekApi";
 
 
-const STORAGE_KEY = "kdl_chat_log";
+const STORAGE_KEY = "kdl_story_log";
 
 
 // 本地存储键名
-const STORAGE_STATS_KEY = "kdl_chat_stats";
+const STORAGE_STATS_KEY = "kdl_story_stats";
 const showModal = ref(false);
 // Stats 类型声明，确保所有字段都有默认值
 interface Stats {
   firstTimestamp: number; // 首次使用时间戳
-  totalChats: number; // 总对话次数
+  totalChats: number; // 总演绎次数
   activeDates: string[]; // 有发言的日期列表（yyyy‑mm‑dd）
-  dailyChats: Record<string, number>; // 每日对话次数
+  dailyChats: Record<string, number>; // 每日演绎次数
   currentStreak: number; // 当前连续活跃天数
   longestStreak: number; // 历史最长连续活跃天数
 
@@ -183,7 +183,7 @@ function updateStreak() {
   saveStats()
 }
 
-// 更新「每日对话次数」
+// 更新「每日演绎次数」
 function updateDaily(date: string) {
   stats.dailyChats[date] = (stats.dailyChats[date] || 0) + 1;
   saveStats();  // 持久化活跃天数变化
@@ -260,7 +260,7 @@ async function sendMessage() {
   try {
     //  throw new Error("测试错误");
     const history = chatLog.value.filter((msg) => !msg.isEgg && !msg.isError);
-    const botReply = await sendMessageToKdl(userText, history);
+    const botReply = await sendMessageToSystem(userText, history);
     chatLog.value.push({
       id: Date.now() + 1,
       role: "bot",
@@ -293,12 +293,12 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 function clearChat() {
-  if (confirm("确定要清空全部对话吗？")) {
+  if (confirm("确定要清空全部演绎吗？")) {
     chatLog.value = [
       {
         id: Date.now(),
         role: "bot",
-        text: "你好，我是珂朵莉，有什么想知道的吗？",
+        text: "我醒来时，冰冷的空气侵入肺腑——Regles Aile 的灰蓝天空延伸至天际。半千年后的今天，我是威廉·克梅修，动画第一集的起点：一个醒来的人类，面对满天浮岛、Beasts 威胁与少女们的命运。我将成为她们的守护者。接下来你可以选择：先去仓库找到珂朵莉、了解现在的世界情况、或首先巡视天空岛的边缘……准备好了吗？",
       },
     ];
     localStorage.removeItem(STORAGE_KEY);
@@ -320,7 +320,7 @@ function loadChatLog(): ChatMsg[] {
     {
       id: Date.now(),
       role: "bot",
-      text: "你好，我是珂朵莉，有什么想知道的吗？",
+      text: "我醒来时，冰冷的空气侵入肺腑——Regles Aile 的灰蓝天空延伸至天际。半千年后的今天，我是威廉·克梅修，动画第一集的起点：一个醒来的人类，面对满天浮岛、Beasts 威胁与少女们的命运。我将成为她们的守护者。接下来你可以选择：先去仓库找到珂朵莉、了解现在的世界情况、或首先巡视天空岛的边缘……准备好了吗？",
     },
   ];
 }
@@ -360,10 +360,7 @@ onBeforeUnmount(() => {
 .chat-page {
   padding-top: 64px;
   min-height: 100vh;
-  background: linear-gradient(to bottom right,
-      #1e2e4d,
-      #758cb3,
-      #d06487);
+  background: linear-gradient(to bottom, #001b2e, #2f3f6b, #6b85a4); // 移除粉色，改为冷夜 → 浅雾蓝氛围
   color: #e9eef8;
   display: flex;
   flex-direction: column;
@@ -379,6 +376,7 @@ onBeforeUnmount(() => {
 
     .stats-panel {
       display: flex;
+      justify-content: space-around;
       align-items: center;
       background: rgba(164, 217, 249, 0.12);
       backdrop-filter: blur(6px);
@@ -386,15 +384,13 @@ onBeforeUnmount(() => {
       border-radius: 12px;
       font-size: 14px;
       color: #e9eef8;
-      justify-content: space-around;
-
+     
       .stat-item span {
         color: #a4d9f9;
         font-weight: bold;
       }
 
       .detail-btn {
-
         background: transparent;
         border: 1px solid #a4d9f9;
         border-radius: 4px;
