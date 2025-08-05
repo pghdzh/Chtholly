@@ -47,7 +47,8 @@ const links = [
   { name: "留言板", path: "/message" },
   { name: "图集", path: "/gallery" },
   { name: "柯学探讨", path: "/talk" },
-   { name: "柯学演绎", path: "/story" },
+  { name: "柯学演绎", path: "/story" },
+  { name: "鸣谢", path: "/thanks" },
 ];
 
 const handleScroll = () => {

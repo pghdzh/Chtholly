@@ -34,6 +34,10 @@ const router = createRouter({
       path: "/story",
       component: () => import("@/views/storyView/index.vue"),
     },
+    {
+      path: "/thanks",
+      component: () => import("@/views/thanksView/index.vue"),
+    },
   ],
   scrollBehavior() {
     return { top: 0 };
