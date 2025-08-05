@@ -51,18 +51,7 @@ const acknowledgements = reactive([
   color: #fff;
   overflow: hidden;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('/assets/particle.png');
-    opacity: 0.1;
-    animation: particleMove 15s linear infinite;
-    pointer-events: none;
-  }
+ 
 }
 
 @keyframes bgGradient {
@@ -71,10 +60,7 @@ const acknowledgements = reactive([
   100% { background-position: 0% 50%; }
 }
 
-@keyframes particleMove {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(-200px, 200px); }
-}
+
 
 .page-title {
   font-size: 2.2rem;
