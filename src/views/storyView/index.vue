@@ -1,6 +1,5 @@
 <template>
   <div class="chat-page">
-
     <div class="chat-container">
       <!-- 统计面板 -->
 
@@ -18,13 +17,20 @@
           活跃天数：<span>{{ stats.activeDates.length }}</span> 天
         </div>
         <div class="stat-item">
-          今日演绎：<span>{{ stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0 }}</span> 次
+          今日演绎：<span>{{
+            stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0
+          }}</span>
+          次
         </div>
         <button class="detail-btn" @click="showModal = true">全部</button>
       </div>
       <div class="messages" ref="msgList">
         <transition-group name="msg" tag="div">
-          <div v-for="msg in chatLog" :key="msg.id" :class="['message', msg.role, { error: msg.isError }]">
+          <div
+            v-for="msg in chatLog"
+            :key="msg.id"
+            :class="['message', msg.role, { error: msg.isError }]"
+          >
             <div class="avatar" :class="msg.role"></div>
             <div class="bubble">
               <div class="content" v-html="msg.text"></div>
@@ -45,19 +51,40 @@
       </div>
       <form class="input-area" @submit.prevent="sendMessage">
         <!-- 输入框 -->
-        <input v-model="input" type="text" placeholder="向珂朵莉提问…" :disabled="loading" @keydown="handleKeydown" />
+        <input
+          v-model="input"
+          type="text"
+          placeholder="向珂朵莉提问…"
+          :disabled="loading"
+          @keydown="handleKeydown"
+        />
         <!-- 清空 & 语音 图标按钮组 -->
         <div class="btn-group">
-          <button type="button" class="clear-btn" @click="clearChat" :disabled="loading" title="清空演绎">
+          <button
+            type="button"
+            class="clear-btn"
+            @click="clearChat"
+            :disabled="loading"
+            title="清空演绎"
+          >
             ✖
           </button>
         </div>
         <!-- 发送主按钮 -->
-        <button type="submit" class="send-btn" :disabled="!input.trim() || loading">
+        <button
+          type="submit"
+          class="send-btn"
+          :disabled="!input.trim() || loading"
+        >
           发送
         </button>
         <!-- 统计数据按钮 -->
-        <button type="button" class="Alldetail-btn" @click="showModal = true" title="查看统计">
+        <button
+          type="button"
+          class="Alldetail-btn"
+          @click="showModal = true"
+          title="查看统计"
+        >
           统计数据
         </button>
       </form>
@@ -75,7 +102,12 @@
             }}
           </li>
           <li>活跃天数：{{ stats.activeDates.length }} 天</li>
-          <li>今日演绎：{{ stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0 }} 次</li>
+          <li>
+            今日演绎：{{
+              stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0
+            }}
+            次
+          </li>
           <li>总使用时长：{{ formatDuration(stats.totalTime) }}</li>
           <li>当前连续活跃：{{ stats.currentStreak }} 天</li>
           <li>最长连续活跃：{{ stats.longestStreak }} 天</li>
@@ -105,9 +137,7 @@ import {
 } from "vue";
 import { sendMessageToSystem } from "@/api/deepseekApi";
 
-
 const STORAGE_KEY = "kdl_story_log";
-
 
 // 本地存储键名
 const STORAGE_STATS_KEY = "kdl_story_stats";
@@ -122,7 +152,6 @@ interface Stats {
   longestStreak: number; // 历史最长连续活跃天数
 
   totalTime: number; // 累计使用时长（毫秒）
-
 }
 
 // 默认值，用于补齐本地存储中可能缺失的字段
@@ -156,13 +185,12 @@ function saveStats() {
   localStorage.setItem(STORAGE_STATS_KEY, JSON.stringify(stats));
 }
 
-
 // 更新「活跃天数」及「连续活跃」逻辑
 function updateActive(date: string) {
   if (!stats.activeDates.includes(date)) {
     stats.activeDates.push(date);
     updateStreak();
-    saveStats();  // 持久化活跃天数变化
+    saveStats(); // 持久化活跃天数变化
   }
 }
 function updateStreak() {
@@ -180,16 +208,14 @@ function updateStreak() {
   });
   stats.currentStreak = dates[dates.length - 1] === todayStr ? curr : 0;
   stats.longestStreak = max;
-  saveStats()
+  saveStats();
 }
 
 // 更新「每日演绎次数」
 function updateDaily(date: string) {
   stats.dailyChats[date] = (stats.dailyChats[date] || 0) + 1;
-  saveStats();  // 持久化活跃天数变化
+  saveStats(); // 持久化活跃天数变化
 }
-
-
 
 // 计算最活跃日
 const mostActiveDayComputed = computed(() => {
@@ -201,9 +227,8 @@ const mostActiveDayComputed = computed(() => {
       day = d;
     }
   }
-  return day || new Date().toISOString().slice(0, 10)
+  return day || new Date().toISOString().slice(0, 10);
 });
-
 
 // 格式化总使用时长
 function formatDuration(ms: number): string {
@@ -218,7 +243,6 @@ const stats = reactive<Stats>(loadStats());
 // 会话开始时间，用于计算本次时长
 const sessionStart = Date.now();
 
-
 interface ChatMsg {
   id: number;
   role: "user" | "bot";
@@ -232,17 +256,13 @@ const input = ref("");
 const loading = ref(false);
 const msgList = ref<HTMLElement>();
 
-
-
-
-
 async function sendMessage() {
   if (!input.value.trim()) return;
   if (stats.totalChats === 0 && !localStorage.getItem(STORAGE_STATS_KEY)) {
     stats.firstTimestamp = Date.now();
     saveStats();
   }
-  const date = new Date().toISOString().slice(0, 10);  // 每次都取最新“今天”
+  const date = new Date().toISOString().slice(0, 10); // 每次都取最新“今天”
   stats.totalChats++;
   updateActive(date);
   updateDaily(date);
@@ -266,13 +286,10 @@ async function sendMessage() {
       role: "bot",
       text: botReply,
     });
-
   } catch (e) {
     console.error(e);
 
-    const errorMessages = [
-      "API余额耗尽了，去b站提醒我充钱吧",
-    ];
+    const errorMessages = ["API余额耗尽了，去b站提醒我充钱吧"];
 
     const randomIndex = Math.floor(Math.random() * errorMessages.length);
 
@@ -298,12 +315,13 @@ function clearChat() {
       {
         id: Date.now(),
         role: "bot",
-        text: "我醒来时，冰冷的空气侵入肺腑——Regles Aile 的灰蓝天空延伸至天际。半千年后的今天，我是威廉·克梅修，动画第一集的起点：一个醒来的人类，面对满天浮岛、Beasts 威胁与少女们的命运。我将成为她们的守护者。接下来你可以选择：先去仓库找到珂朵莉、了解现在的世界情况、或首先巡视天空岛的边缘……准备好了吗？",
+        text: `在灰蓝天空下，Regles Aile 的浮游大地如无尽群岛般悬浮云端，寂静中透出苍凉。半千年后的今日，你——威廉·克梅修被冰封于地表之下、人类唯一幸存者，在这陌生世界醒来。
+现在，正值故事开启的最初场景——动画第一集的序幕。
+接下来，你将以威廉的视角行动：可以选择先前往武器仓库与珂朵莉相见、获取当前世界的核心情报，或先巡视天空岛边缘、探寻 Beast 的潜在威胁。请做出选择——守护之旅，由此开始。
+`,
       },
     ];
     localStorage.removeItem(STORAGE_KEY);
-
-
   }
 }
 
@@ -320,7 +338,10 @@ function loadChatLog(): ChatMsg[] {
     {
       id: Date.now(),
       role: "bot",
-      text: "我醒来时，冰冷的空气侵入肺腑——Regles Aile 的灰蓝天空延伸至天际。半千年后的今天，我是威廉·克梅修，动画第一集的起点：一个醒来的人类，面对满天浮岛、Beasts 威胁与少女们的命运。我将成为她们的守护者。接下来你可以选择：先去仓库找到珂朵莉、了解现在的世界情况、或首先巡视天空岛的边缘……准备好了吗？",
+      text: `在灰蓝天空下，Regles Aile 的浮游大地如无尽群岛般悬浮云端，寂静中透出苍凉。半千年后的今日，你——威廉·克梅修被冰封于地表之下、人类唯一幸存者，在这陌生世界醒来。
+现在，正值故事开启的最初场景——动画第一集的序幕。
+接下来，你将以威廉的视角行动：可以选择先前往武器仓库与珂朵莉相见、获取当前世界的核心情报，或先巡视天空岛边缘、探寻 Beast 的潜在威胁。请做出选择——守护之旅，由此开始。
+`,
     },
   ];
 }
@@ -342,17 +363,17 @@ watch(
 );
 
 function handleBeforeUnload() {
-  stats.totalTime += Date.now() - sessionStart
-  saveStats()
+  stats.totalTime += Date.now() - sessionStart;
+  saveStats();
 }
 
 onMounted(() => {
   scrollToBottom();
-  window.addEventListener("beforeunload", handleBeforeUnload)
+  window.addEventListener("beforeunload", handleBeforeUnload);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("beforeunload", handleBeforeUnload)
+  window.removeEventListener("beforeunload", handleBeforeUnload);
 });
 </script>
 
@@ -360,7 +381,12 @@ onBeforeUnmount(() => {
 .chat-page {
   padding-top: 64px;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #001b2e, #2f3f6b, #6b85a4); // 移除粉色，改为冷夜 → 浅雾蓝氛围
+  background: linear-gradient(
+    to bottom,
+    #001b2e,
+    #2f3f6b,
+    #6b85a4
+  ); // 移除粉色，改为冷夜 → 浅雾蓝氛围
   color: #e9eef8;
   display: flex;
   flex-direction: column;
@@ -384,7 +410,7 @@ onBeforeUnmount(() => {
       border-radius: 12px;
       font-size: 14px;
       color: #e9eef8;
-     
+
       .stat-item span {
         color: #a4d9f9;
         font-weight: bold;
@@ -439,13 +465,12 @@ onBeforeUnmount(() => {
       z-index: 10;
 
       &.bot {
-        background-image: url("@/assets/chtholly-avatar2.webp");
-        box-shadow: 0 0 14px #a4d9f9;
-
+        background: rgba(255, 255, 255, 0.8);
       }
 
       &.user {
-        background: rgba(255, 255, 255, 0.8);
+        background-image: url("@/assets/story-avatar.webp");
+        box-shadow: 0 0 14px #a4d9f9;
       }
     }
 
@@ -560,7 +585,6 @@ onBeforeUnmount(() => {
       }
 
       @keyframes pulse {
-
         0%,
         100% {
           box-shadow: 0 0 8px rgba(190, 220, 255, 0.4);
