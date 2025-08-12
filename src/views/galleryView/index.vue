@@ -668,11 +668,26 @@ $highlight: #ffd700;
     }
 
     .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+      column-count: 4; /* 列数，可用 media query 响应式调整 */
+      column-gap: 24px; /* 列间距 */
+
+      @media (max-width: 1200px) {
+        column-count: 3;
+      }
+
+      @media (max-width: 768px) {
+        column-count: 2;
+      }
+
+      @media (max-width: 480px) {
+        column-count: 1;
+      }
 
       .card {
+        display: inline-block; /* 必须，才能在 columns 中正确断行 */
+        width: 100%;
+        margin-bottom: 24px; /* 行间距 */
+
         perspective: 1000px;
         opacity: 0;
         transform: translateY(20px);
@@ -682,7 +697,6 @@ $highlight: #ffd700;
         }
 
         &.loaded {
-          // Blur-up & grayscale removed
           .card-inner img {
             filter: none;
             opacity: 1;
@@ -704,7 +718,7 @@ $highlight: #ffd700;
 
           img {
             width: 100%;
-            height: 100%;
+            height: auto; /* 高度自适应 */
             object-fit: cover;
             display: block;
             filter: blur(20px) grayscale(100%);
@@ -770,7 +784,6 @@ $highlight: #ffd700;
               background-size: contain;
               animation: pop 0.4s ease;
 
-              /* 持续呼吸光效 */
               &::after {
                 content: "";
                 position: absolute;
@@ -791,23 +804,6 @@ $highlight: #ffd700;
               color: #ff4b4b;
               text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
               font-weight: bold;
-            }
-          }
-
-          @keyframes pulse {
-            0% {
-              transform: translate(-50%, -50%) scale(0.6);
-              opacity: 0.6;
-            }
-
-            50% {
-              transform: translate(-50%, -50%) scale(1.2);
-              opacity: 0;
-            }
-
-            100% {
-              transform: translate(-50%, -50%) scale(0.6);
-              opacity: 0;
             }
           }
         }

@@ -1,6 +1,5 @@
 <template>
   <div class="chat-page">
-
     <div class="chat-container">
       <!-- 统计面板 -->
 
@@ -18,13 +17,20 @@
           活跃天数：<span>{{ stats.activeDates.length }}</span> 天
         </div>
         <div class="stat-item">
-          今日对话：<span>{{ stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0 }}</span> 次
+          今日对话：<span>{{
+            stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0
+          }}</span>
+          次
         </div>
         <button class="detail-btn" @click="showModal = true">全部</button>
       </div>
       <div class="messages" ref="msgList">
         <transition-group name="msg" tag="div">
-          <div v-for="msg in chatLog" :key="msg.id" :class="['message', msg.role, { error: msg.isError }]">
+          <div
+            v-for="msg in chatLog"
+            :key="msg.id"
+            :class="['message', msg.role, { error: msg.isError }]"
+          >
             <div class="avatar" :class="msg.role"></div>
             <div class="bubble">
               <div class="content" v-html="msg.text"></div>
@@ -45,19 +51,40 @@
       </div>
       <form class="input-area" @submit.prevent="sendMessage">
         <!-- 输入框 -->
-        <input v-model="input" type="text" placeholder="向珂朵莉提问…" :disabled="loading" @keydown="handleKeydown" />
+        <input
+          v-model="input"
+          type="text"
+          placeholder="向珂朵莉提问…"
+          :disabled="loading"
+          @keydown="handleKeydown"
+        />
         <!-- 清空 & 语音 图标按钮组 -->
         <div class="btn-group">
-          <button type="button" class="clear-btn" @click="clearChat" :disabled="loading" title="清空对话">
+          <button
+            type="button"
+            class="clear-btn"
+            @click="clearChat"
+            :disabled="loading"
+            title="清空对话"
+          >
             ✖
           </button>
         </div>
         <!-- 发送主按钮 -->
-        <button type="submit" class="send-btn" :disabled="!input.trim() || loading">
+        <button
+          type="submit"
+          class="send-btn"
+          :disabled="!input.trim() || loading"
+        >
           发送
         </button>
         <!-- 统计数据按钮 -->
-        <button type="button" class="Alldetail-btn" @click="showModal = true" title="查看统计">
+        <button
+          type="button"
+          class="Alldetail-btn"
+          @click="showModal = true"
+          title="查看统计"
+        >
           统计数据
         </button>
       </form>
@@ -75,7 +102,12 @@
             }}
           </li>
           <li>活跃天数：{{ stats.activeDates.length }} 天</li>
-          <li>今日对话：{{ stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0 }} 次</li>
+          <li>
+            今日对话：{{
+              stats.dailyChats[new Date().toISOString().slice(0, 10)] || 0
+            }}
+            次
+          </li>
           <li>总使用时长：{{ formatDuration(stats.totalTime) }}</li>
           <li>当前连续活跃：{{ stats.currentStreak }} 天</li>
           <li>最长连续活跃：{{ stats.longestStreak }} 天</li>
@@ -105,9 +137,7 @@ import {
 } from "vue";
 import { sendMessageToKdl } from "@/api/deepseekApi";
 
-
 const STORAGE_KEY = "kdl_chat_log";
-
 
 // 本地存储键名
 const STORAGE_STATS_KEY = "kdl_chat_stats";
@@ -122,7 +152,6 @@ interface Stats {
   longestStreak: number; // 历史最长连续活跃天数
 
   totalTime: number; // 累计使用时长（毫秒）
-
 }
 
 // 默认值，用于补齐本地存储中可能缺失的字段
@@ -156,13 +185,12 @@ function saveStats() {
   localStorage.setItem(STORAGE_STATS_KEY, JSON.stringify(stats));
 }
 
-
 // 更新「活跃天数」及「连续活跃」逻辑
 function updateActive(date: string) {
   if (!stats.activeDates.includes(date)) {
     stats.activeDates.push(date);
     updateStreak();
-    saveStats();  // 持久化活跃天数变化
+    saveStats(); // 持久化活跃天数变化
   }
 }
 function updateStreak() {
@@ -180,16 +208,14 @@ function updateStreak() {
   });
   stats.currentStreak = dates[dates.length - 1] === todayStr ? curr : 0;
   stats.longestStreak = max;
-  saveStats()
+  saveStats();
 }
 
 // 更新「每日对话次数」
 function updateDaily(date: string) {
   stats.dailyChats[date] = (stats.dailyChats[date] || 0) + 1;
-  saveStats();  // 持久化活跃天数变化
+  saveStats(); // 持久化活跃天数变化
 }
-
-
 
 // 计算最活跃日
 const mostActiveDayComputed = computed(() => {
@@ -201,9 +227,8 @@ const mostActiveDayComputed = computed(() => {
       day = d;
     }
   }
-  return day || new Date().toISOString().slice(0, 10)
+  return day || new Date().toISOString().slice(0, 10);
 });
-
 
 // 格式化总使用时长
 function formatDuration(ms: number): string {
@@ -218,7 +243,6 @@ const stats = reactive<Stats>(loadStats());
 // 会话开始时间，用于计算本次时长
 const sessionStart = Date.now();
 
-
 interface ChatMsg {
   id: number;
   role: "user" | "bot";
@@ -232,17 +256,13 @@ const input = ref("");
 const loading = ref(false);
 const msgList = ref<HTMLElement>();
 
-
-
-
-
 async function sendMessage() {
   if (!input.value.trim()) return;
   if (stats.totalChats === 0 && !localStorage.getItem(STORAGE_STATS_KEY)) {
     stats.firstTimestamp = Date.now();
     saveStats();
   }
-  const date = new Date().toISOString().slice(0, 10);  // 每次都取最新“今天”
+  const date = new Date().toISOString().slice(0, 10); // 每次都取最新“今天”
   stats.totalChats++;
   updateActive(date);
   updateDaily(date);
@@ -266,13 +286,10 @@ async function sendMessage() {
       role: "bot",
       text: botReply,
     });
-
   } catch (e) {
     console.error(e);
 
-    const errorMessages = [
-      "API余额耗尽了，去b站提醒我充钱吧",
-    ];
+    const errorMessages = ["API余额耗尽了，去b站提醒我充钱吧"];
 
     const randomIndex = Math.floor(Math.random() * errorMessages.length);
 
@@ -302,8 +319,6 @@ function clearChat() {
       },
     ];
     localStorage.removeItem(STORAGE_KEY);
-
-
   }
 }
 
@@ -342,17 +357,17 @@ watch(
 );
 
 function handleBeforeUnload() {
-  stats.totalTime += Date.now() - sessionStart
-  saveStats()
+  stats.totalTime += Date.now() - sessionStart;
+  saveStats();
 }
 
 onMounted(() => {
   scrollToBottom();
-  window.addEventListener("beforeunload", handleBeforeUnload)
+  window.addEventListener("beforeunload", handleBeforeUnload);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener("beforeunload", handleBeforeUnload)
+  window.removeEventListener("beforeunload", handleBeforeUnload);
 });
 </script>
 
@@ -360,10 +375,7 @@ onBeforeUnmount(() => {
 .chat-page {
   padding-top: 64px;
   min-height: 100vh;
-  background: linear-gradient(to bottom right,
-      #1e2e4d,
-      #758cb3,
-      #d06487);
+  background: linear-gradient(to bottom right, #1e2e4d, #758cb3, #d06487);
   color: #e9eef8;
   display: flex;
   flex-direction: column;
@@ -394,7 +406,6 @@ onBeforeUnmount(() => {
       }
 
       .detail-btn {
-
         background: transparent;
         border: 1px solid #a4d9f9;
         border-radius: 4px;
@@ -445,7 +456,6 @@ onBeforeUnmount(() => {
       &.bot {
         background-image: url("@/assets/chtholly-avatar2.webp");
         box-shadow: 0 0 14px #a4d9f9;
-
       }
 
       &.user {
@@ -478,6 +488,41 @@ onBeforeUnmount(() => {
 
       .message.user & {
         border-radius: 16px 16px 4px 16px;
+      }
+
+      .dots {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 4px;
+
+        .dot {
+          opacity: 0;
+          font-size: 16px;
+          animation: blink 1s infinite;
+
+          &:nth-child(1) {
+            animation-delay: 0s;
+          }
+
+          &:nth-child(2) {
+            animation-delay: 0.2s;
+          }
+
+          &:nth-child(3) {
+            animation-delay: 0.4s;
+          }
+        }
+
+        @keyframes blink {
+          0%,
+          100% {
+            opacity: 0;
+          }
+
+          50% {
+            opacity: 1;
+          }
+        }
       }
     }
   }
@@ -564,7 +609,6 @@ onBeforeUnmount(() => {
       }
 
       @keyframes pulse {
-
         0%,
         100% {
           box-shadow: 0 0 8px rgba(190, 220, 255, 0.4);
