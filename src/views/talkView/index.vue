@@ -306,7 +306,7 @@ async function sendMessage() {
 }
 
 function handleKeydown(e: KeyboardEvent) {
-  if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) sendMessage();
+  if (e.key === "Enter" ) sendMessage();
 }
 
 function clearChat() {
