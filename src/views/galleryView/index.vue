@@ -9,20 +9,9 @@
         </button>
       </div>
       <div class="gallery-grid">
-        <div
-          v-for="(img, index) in images"
-          :key="img.id"
-          class="card"
-          @click="openLightbox(index)"
-          ref="cards"
-        >
+        <div v-for="(img, index) in images" :key="img.id" class="card" @click="openLightbox(index)" ref="cards">
           <div class="card-inner">
-            <img
-              :src="img.src"
-              :alt="img.alt"
-              loading="lazy"
-              @load="onImageLoad($event)"
-            />
+            <img :src="img.src" :alt="img.alt" loading="lazy" @load="onImageLoad($event)" />
             <div class="overlay">
               <span>查看大图</span>
             </div>
@@ -46,12 +35,7 @@
       </div>
       <transition name="fade">
         <ul v-if="expanded" class="ranking-list">
-          <li
-            v-for="(item, idx) in rankingList"
-            :key="idx"
-            class="ranking-item"
-            :class="`rank-${idx + 1}`"
-          >
+          <li v-for="(item, idx) in rankingList" :key="idx" class="ranking-item" :class="`rank-${idx + 1}`">
             <span class="rank">{{ idx + 1 }}</span>
             <span class="name">{{ item.nickname }}</span>
             <span class="count">{{ item.count }} 张</span>
@@ -68,11 +52,7 @@
     </div>
 
     <!-- 上传弹窗 -->
-    <div
-      v-if="uploadModalOpen"
-      class="upload-modal-overlay"
-      @click.self="closeUploadModal"
-    >
+    <div v-if="uploadModalOpen" class="upload-modal-overlay" @click.self="closeUploadModal">
       <div class="upload-modal">
         <h3>批量上传图片</h3>
         <div class="tip-container">
@@ -98,13 +78,7 @@
         </label>
         <label>
           选择图片（最多 {{ remaining }} 张）：
-          <input
-            ref="fileInput"
-            type="file"
-            multiple
-            accept="image/*"
-            @change="handleFileSelect"
-          />
+          <input ref="fileInput" type="file" multiple accept="image/*" @change="handleFileSelect" />
         </label>
         <p class="tip" v-if="selectedFiles.length">
           已选 {{ selectedFiles.length }} 张
@@ -119,13 +93,8 @@
     </div>
 
     <div class="floating-chibis">
-      <img
-        v-for="(pet, i) in chibiList"
-        :key="i"
-        :src="pet.src"
-        :style="{ top: pet.top + 'px', left: pet.left + 'px' }"
-        class="chibi-img"
-      />
+      <img v-for="(pet, i) in chibiList" :key="i" :src="pet.src" :style="{ top: pet.top + 'px', left: pet.left + 'px' }"
+        class="chibi-img" />
     </div>
   </div>
 </template>
@@ -484,6 +453,11 @@ onMounted(async () => {
 
   // 4. 生成随机位置并填充 chibiList
   chibiList.value = []; // 先清空
+  chibiList.value.push({
+    src: `/QImages/2.gif`,
+    left: Math.random() * (vw - imgWidth), // 保证不超出左右边界
+    top: Math.random() * (vh - imgHeight), // 保证不超出上下边界
+  });
   picks.forEach((i) => {
     chibiList.value.push({
       src: `/QImages/1 (${i}).png`,
@@ -637,11 +611,9 @@ $highlight: #ffd700;
         top: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(
-          circle at center,
-          rgba(255, 100, 120, 0.4),
-          transparent 60%
-        );
+        background: radial-gradient(circle at center,
+            rgba(255, 100, 120, 0.4),
+            transparent 60%);
         opacity: 0;
         transform: scale(0.5);
         transition: opacity 0.4s, transform 0.4s;
@@ -682,6 +654,7 @@ $highlight: #ffd700;
         }
 
         &.loaded {
+
           // Blur-up & grayscale removed
           .card-inner img {
             filter: none;
@@ -906,11 +879,9 @@ $highlight: #ffd700;
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      background: radial-gradient(
-        circle at center,
-        rgba(255, 100, 120, 0.3),
-        transparent 60%
-      );
+      background: radial-gradient(circle at center,
+          rgba(255, 100, 120, 0.3),
+          transparent 60%);
       opacity: 0;
       transition: opacity 0.4s, transform 0.4s;
       transform: scale(0.5);
@@ -990,6 +961,7 @@ $highlight: #ffd700;
             color: #a4d9f9;
             text-shadow: 0 0 4px rgba(164, 217, 249, 0.6);
           }
+
           &:last-child {
             margin-bottom: 0;
           }
@@ -1163,10 +1135,12 @@ $highlight: #ffd700;
           background: linear-gradient(135deg, #a4d9f9, #2f3f6b, #a4d9f9);
           box-shadow: 0 0 12px rgba(164, 217, 249, 0.8);
         }
+
         &.rank-2 {
           background: linear-gradient(135deg, #d16ba5, #a03070);
           box-shadow: 0 0 10px rgba(209, 107, 165, 0.7);
         }
+
         &.rank-3 {
           background: linear-gradient(135deg, #b78ac8, #d16ba5);
           box-shadow: 0 0 8px rgba(209, 107, 165, 0.6);
@@ -1179,6 +1153,7 @@ $highlight: #ffd700;
     .fade-leave-active {
       transition: opacity 0.3s ease;
     }
+
     .fade-enter-from,
     .fade-leave-to {
       opacity: 0;
