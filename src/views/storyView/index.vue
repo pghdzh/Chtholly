@@ -502,7 +502,40 @@ onBeforeUnmount(() => {
       }
     }
   }
+  .dots {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 4px;
 
+    .dot {
+      opacity: 0;
+      font-size: 16px;
+      animation: blink 1s infinite;
+
+      &:nth-child(1) {
+        animation-delay: 0s;
+      }
+
+      &:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      &:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+    }
+
+    @keyframes blink {
+      0%,
+      100% {
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+  }
   .input-area {
     position: sticky;
     bottom: 0;

@@ -28,6 +28,7 @@
 import { reactive } from 'vue'
 const acknowledgements = reactive([
   { nickname: 'bili547753367', suggestion: '添加首屏欢迎动画' },
+  { nickname: 'mathputer', suggestion: '图集瀑布流布局(实现之后发现会打乱排序最终未采用)' },
 ])
 </script>
 
