@@ -46,8 +46,9 @@ const links = [
   { name: "角色设定", path: "/characters" },
   { name: "留言板", path: "/message" },
   { name: "图集", path: "/gallery" },
-  { name: "柯学探讨", path: "/talk" },
-  { name: "柯学演绎", path: "/story" },
+  { name: "珂学探讨", path: "/talk" },
+  { name: "珂学演绎", path: "/story" },
+  { name: "资源分享", path: "/resources" },
   { name: "鸣谢", path: "/thanks" },
 ];
 
@@ -221,7 +222,7 @@ $gradient-end: #d06487;
       transition: max-height 0.3s ease;
 
       &.is-open {
-        max-height: 300px;
+        max-height: 600px;
 
         li {
           margin: 1rem 0;
