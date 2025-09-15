@@ -55,7 +55,7 @@
                 <ul class="items">
                     <li v-for="item in sortedResources" :key="item.id" class="item">
                         <a :href="item.link" target="_blank" rel="noopener noreferrer" class="title">{{ item.title
-                        }}</a>
+                            }}</a>
 
                         <div class="meta">
                             <div class="left">
@@ -474,7 +474,7 @@ $gradient-end: #d06487;
 
                     .title {
                         display: block;
-                        color: $text;
+                        color: #000;
                         font-weight: 700;
                         text-decoration: none;
                         margin-bottom: 8px;
@@ -488,7 +488,7 @@ $gradient-end: #d06487;
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
-                        color: $muted;
+                        color: #000;
                         font-size: 13px;
 
                         .left {
