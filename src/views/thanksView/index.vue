@@ -3,14 +3,10 @@
     <div class="ack-container">
       <h1 class="page-title">鸣谢名单</h1>
       <ul class="ack-list">
-        <li
-          v-for="(item, index) in acknowledgements"
-          :key="index"
-          class="ack-item"
-          :style="{ animationDelay: index * 0.15 + 's' }"
-        >
+        <li v-for="(item, index) in acknowledgements" :key="index" class="ack-item"
+          :style="{ animationDelay: index * 0.15 + 's' }">
           <span class="nickname">{{ item.nickname }}:</span>
-          
+
           <span class="suggestion">{{ item.suggestion }}</span>
         </li>
       </ul>
@@ -29,6 +25,8 @@ import { reactive } from 'vue'
 const acknowledgements = reactive([
   { nickname: 'bili547753367', suggestion: '添加首屏欢迎动画' },
   { nickname: 'mathputer', suggestion: '图集瀑布流布局(实现之后发现会打乱排序最终未采用)' },
+  { nickname: '世界で一番幸せな女の子', suggestion: '移动端下图集漂浮的珂珂减少为1个' },
+
 ])
 </script>
 
@@ -52,13 +50,21 @@ const acknowledgements = reactive([
   color: #fff;
   overflow: hidden;
 
- 
+
 }
 
 @keyframes bgGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 

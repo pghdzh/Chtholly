@@ -429,10 +429,10 @@ onMounted(async () => {
   }
   // 1. 基础配置信息
   const total = 6; // 总共 9 张图（编号 1～9）
-  const pickCount = 2; // 每次抽取 3 张
+  let pickCount = 2; // 每次抽取 3 张
   const vw = window.innerWidth;
   const vh = window.innerHeight;
-
+  const isMobile = window.innerWidth <= 768
   // 如果已知单张小人图片的宽高，可避免超出边界；
   // 假设小人图片宽 100px、高 100px，按需替换：
   const imgWidth = 100;
@@ -449,15 +449,20 @@ onMounted(async () => {
 
   // 3. 随机选出 3 个编号
   const nums = shuffle(Array.from({ length: total }, (_, k) => k + 1));
-  const picks = nums.slice(0, pickCount);
 
   // 4. 生成随机位置并填充 chibiList
   chibiList.value = []; // 先清空
-  chibiList.value.push({
-    src: `/QImages/2.gif`,
-    left: Math.random() * (vw - imgWidth), // 保证不超出左右边界
-    top: Math.random() * (vh - imgHeight), // 保证不超出上下边界
-  });
+  if (!isMobile) {
+    chibiList.value.push({
+      src: `/QImages/2.gif`,
+      left: Math.random() * (vw - imgWidth), // 保证不超出左右边界
+      top: Math.random() * (vh - imgHeight), // 保证不超出上下边界
+    });
+  } else {
+    pickCount = 1
+  }
+  const picks = nums.slice(0, pickCount);
+
   picks.forEach((i) => {
     chibiList.value.push({
       src: `/QImages/1 (${i}).png`,
