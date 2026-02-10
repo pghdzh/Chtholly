@@ -47,7 +47,6 @@ const links = [
   { name: "留言板", path: "/message" },
   { name: "图集", path: "/gallery" },
   { name: "珂学探讨", path: "/talk" },
-  { name: "珂学演绎", path: "/story" },
   { name: "资源分享", path: "/resources" },
   { name: "鸣谢", path: "/thanks" },
 ];

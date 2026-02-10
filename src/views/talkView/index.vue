@@ -135,7 +135,7 @@ import {
   onBeforeUnmount,
   onUnmounted,
 } from "vue";
-import { sendMessageToKdl } from "@/api/deepseekApi";
+import { sendMessageToHui } from "@/api/deepseekApi";
 
 const STORAGE_KEY = "kdl_chat_log";
 
@@ -280,25 +280,23 @@ async function sendMessage() {
   try {
     //  throw new Error("测试错误");
     const history = chatLog.value.filter((msg) => !msg.isEgg && !msg.isError);
-    const botReply = await sendMessageToKdl(userText, history);
-    chatLog.value.push({
-      id: Date.now() + 1,
-      role: "bot",
-      text: botReply,
-    });
+    const botReply = await sendMessageToHui(userText, history);
+    if (botReply == "error") {
+      chatLog.value.push({
+        id: Date.now() + 2,
+        role: "bot",
+        text: "API余额耗尽了，去b站提醒我充钱吧",
+        isError: true,
+      });
+    } else {
+      chatLog.value.push({
+        id: Date.now() + 1,
+        role: "bot",
+        text: botReply,
+      });
+    }
   } catch (e) {
     console.error(e);
-
-    const errorMessages = ["API余额耗尽了，去b站提醒我充钱吧"];
-
-    const randomIndex = Math.floor(Math.random() * errorMessages.length);
-
-    chatLog.value.push({
-      id: Date.now() + 2,
-      role: "bot",
-      text: errorMessages[randomIndex],
-      isError: true,
-    });
   } finally {
     loading.value = false;
     await scrollToBottom();
@@ -306,7 +304,7 @@ async function sendMessage() {
 }
 
 function handleKeydown(e: KeyboardEvent) {
-  if (e.key === "Enter" ) sendMessage();
+  if (e.key === "Enter") sendMessage();
 }
 
 function clearChat() {
